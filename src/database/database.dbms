@@ -1,0 +1,82 @@
+Table User {
+  Id number [primary key]
+  Email varchar
+  Password varchar
+  Name varchar
+  phoneNumber varchar
+  Address varchar
+  BucketId varchar 
+  createdAt datetime
+  updatdAt datetime
+}
+
+Table Basket {
+  id number [primary key]
+  IdUser number
+  IdBarang number
+  createdAt datetime
+  updatdAt datetime
+}
+
+Table Seller {
+  Id number [primary key]
+  Id_User number
+  Email varchar
+  Password varchar
+  Nama varchar
+  Toko_Id number
+  createdAt datetime
+  updatdAt datetime
+}
+
+Table Toko {
+  id number [primary key]
+  Seller_Id number
+  Address varchar
+  createdAt datetime
+  updatdAt datetime
+}
+
+Table Barang {
+  id number [primary key]
+  Toko_id number
+  Nama varchar
+  Stock varchar
+  buyyer enum
+  createdAt datetime
+  updatdAt datetime
+}
+
+Table ResponseBuyer {
+  id number [primary key]
+  IdUser number
+  IdBarang number
+  rate number
+  comments varchar
+  createdAt datetime
+  updatdAt datetime
+}
+
+Table Transaction {
+  id number [primary key]
+  BuyyerId number
+  TokoId nummber
+  BarangId number
+  Nominal number
+  Status enum (Approved, Rejected)
+  Payment varchar
+  createdAt datetime
+  updatdAt datetime
+}
+
+
+Ref: Barang.id < Basket.IdBarang
+Ref: User.Id < Basket.IdUser
+Ref: Barang.id < Transaction.BarangId
+Ref: User.Id < Transaction.BuyyerId
+Ref: Toko.id < Transaction.TokoId
+Ref: Barang.id < ResponseBuyer.IdBarang
+Ref: User.Id < ResponseBuyer.IdUser
+Ref: User.Id < Seller.Id_User
+Ref: Seller.Toko_Id < Toko.Seller_Id
+Ref: Barang.Toko_id < Toko.id
