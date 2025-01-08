@@ -1,0 +1,134 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          Int      @id @default(autoincrement())
+  email       String   @unique
+  password    String
+  name        String?  @default("")
+  phoneNumber String?  @default("")
+  address     String?  @default("")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now())
+  comments Comments[]
+  Basket Basket?
+  Transaction Transactions[]
+}
+
+model Seller {
+  id          Int      @id @default(autoincrement())
+  email       String   @unique
+  password    String
+  address     String?  @default("")
+  phoneNumber String?  @default("")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now())
+  Store       Store?
+}
+
+model Store {
+  id          Int      @id @default(autoincrement())
+  seller      Seller   @relation(fields: [sellerId], references: [id])
+  sellerId    Int      @unique
+  name        String
+  description String?  @default("")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now())
+  Product     Product[]
+}
+
+model Product {
+  id            Int                   @id @default(autoincrement())
+  store         Store                 @relation(fields: [storeId], references: [id])
+  storeId       Int                   
+  name          String
+  description   String?               @default("")
+  category      Category
+  price         String
+  quantity      Int   
+  quality       Int? @default(0)
+  like          Int?                  @default(0)
+  sold          Int?                  @default(0)
+  Comments      Comments[]
+  Documents     DocumentasionProduct[]
+  Basket Basket[]
+  Transaction Transactions[]
+  createdAt     DateTime              @default(now())
+  updatedAt     DateTime              @default(now())
+}
+
+model DocumentasionProduct {
+  id               Int      @id @default(autoincrement())
+  productId        Int      
+  product          Product  @relation(fields: [productId], references: [id])
+  documentUrl      String
+  documentPublicId String
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @default(now())
+}
+
+model Comments {
+  id Int @id @default(autoincrement())
+  rate Int @default(0)
+  comments String @default("")
+  productId Int
+  product Product @relation(fields: [productId], references: [id])
+  userId Int
+  user User @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+}
+
+model Basket {
+  id Int @id @default(autoincrement())
+  userId Int @unique
+  user User @relation(fields: [userId], references: [id])
+  productId Int
+  product Product @relation(fields: [productId], references: [id])
+  quantity Int? @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+}
+
+model Transactions {
+  id Int @id @default(autoincrement())
+  userId Int
+  user User @relation(fields: [userId], references: [id])
+  productId Int
+  product Product @relation(fields: [productId], references: [id])
+  quantity Int
+  price String
+  status Status
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+}
+
+enum Category {
+  Accessories
+  Audio
+  Cameras
+  Computer
+  Laptop
+  Headphones
+  Smart_Watch
+  Smartphone
+  Speaker
+}
+
+enum Status {
+  Pending
+  Calceled
+  Approved
+}
