@@ -1,82 +1,79 @@
+Table Admin {
+  id number [primary key]
+  email string [unique]
+  password string
+  createdAt date
+  updatedAt  date
+}
+
 Table User {
-  Id number [primary key]
-  Email varchar
-  Password varchar
-  Name varchar
-  phoneNumber varchar
-  Address varchar
-  BucketId varchar 
-  createdAt datetime
-  updatdAt datetime
-}
-
-Table Basket {
   id number [primary key]
-  IdUser number
-  IdBarang number
-  createdAt datetime
-  updatdAt datetime
+  email password [unique]
+  password string
+  name string
+  address string
+  telephoneNumber string [unique]
+  createdAt date
+  updatedAt date
 }
 
-Table Seller {
-  Id number [primary key]
-  Id_User number
-  Email varchar
-  Password varchar
-  Nama varchar
-  Toko_Id number
-  createdAt datetime
-  updatdAt datetime
-}
-
-Table Toko {
+Table Product {
   id number [primary key]
-  Seller_Id number
-  Address varchar
-  createdAt datetime
-  updatdAt datetime
-}
-
-Table Barang {
-  id number [primary key]
-  Toko_id number
-  Nama varchar
-  Stock varchar
-  buyyer enum
-  createdAt datetime
-  updatdAt datetime
-}
-
-Table ResponseBuyer {
-  id number [primary key]
-  IdUser number
-  IdBarang number
+  name string
+  description string
+  like number
+  sold number
+  stock number
   rate number
-  comments varchar
-  createdAt datetime
-  updatdAt datetime
+  category enum
+  createdAt number 
+  updatedAt number
+}
+
+Table ProductMedia {
+  id number [primary key]
+  idProduct number
+  url string
+  publicId string
+  createdAt date
+  updatedAt date
+}
+
+Table Review {
+  id number
+  userId number 
+  productId number
+  rate number
+  reviews string
+  createdAt date
+  updatedAt date
+} 
+
+Table Bucket {
+  id number [primary key]
+  userId number
+  productId number
+  quantity number
+  createdAt date 
+  updatedAt date
 }
 
 Table Transaction {
   id number [primary key]
-  BuyyerId number
-  TokoId nummber
-  BarangId number
-  Nominal number
-  Status enum (Approved, Rejected)
-  Payment varchar
-  createdAt datetime
-  updatdAt datetime
+  userId number
+  productId number
+  quantity number
+  address number
+  total number
+  status enum (Approved,Denied)
+  createdAt date
+  updatedAt date
 }
 
-
-Ref: Barang.id < Basket.IdBarang
-Ref: User.Id < Basket.IdUser
-Ref: Barang.id < Transaction.BarangId
-Ref: User.Id < Transaction.BuyyerId
-Ref: Toko.id < Transaction.TokoId
-Ref: Barang.id < ResponseBuyer.IdBarang
-Ref: User.Id < ResponseBuyer.IdUser
-Ref: User.Id < Seller.Id_User
-Ref: Seller.Toko_Id < Toko.Seller_Id
-Ref: Barang.Toko_id < Toko.id
+Ref: Product.id < Transaction.productId
+Ref: User.id < Transaction.userId
+Ref: Product.id < Bucket.productId
+Ref: User.id < Bucket.userId
+Ref: Product.id < Review.productId 
+Ref: User.id < Review.userId
+Ref: Product.id < ProductMedia.idProduct
