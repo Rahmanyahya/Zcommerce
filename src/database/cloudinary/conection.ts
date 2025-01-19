@@ -1,6 +1,6 @@
 import cloudinary from 'cloudinary'
 import dotenv from 'dotenv'
-import { config } from 'src/infra/global.config';
+import { globalConfig as config } from 'src/infra/global.config';
 dotenv.config()
 
 cloudinary.v2.config({
