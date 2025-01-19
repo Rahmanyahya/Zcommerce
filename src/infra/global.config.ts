@@ -1,10 +1,7 @@
-import dotenv from 'dotenv'
-dotenv.config()
-
-export const config = {
+export const globalConfig = {
     Server: {
         port: process.env.SERVER_PORT || 3030,
-        prefix: process.env.SERVER_PREFIX
+        prefix: process.env.SERVER_PREFIX 
     },
     Mailer: {
         gmail: process.env.GMAIL,
